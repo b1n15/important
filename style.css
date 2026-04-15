@@ -1,0 +1,435 @@
+body {
+    font-family: 'Times New Roman';
+    background: #111;
+    color: white;
+    text-align: center;
+}
+
+section {
+    margin: 30px;
+    padding: 20px;
+    background: #222;
+    border-radius: 10px;
+}
+
+input, textarea {
+    width: 60%;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    background: #2a2a2a;
+    color: white;
+    font-size: 14px;
+}
+
+textarea {
+    height: 100px;
+    resize: none;
+}
+
+button {
+    margin-top: 8px;
+    padding: 5px;
+    width: 50%;
+    border: none;
+    border-radius: 8px;
+    color: #2a2a2a;
+    font-size: 16px;
+    cursor: ponter;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #ff1e4d;
+    transform: scale(1.03);
+}
+
+.gallerry {
+    display: grid !important;
+    display: flex;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid red;
+}
+
+.gallerry img{
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.gallerry img:hover {
+    transform: scale(1.05)
+}
+
+
+.back-btn {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: #1a1a1a;
+  color: white;
+  font-size: 22px;
+  text-decoration: none;
+
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+
+  transition: all 0.2s ease;
+  z-index: 9999;
+}
+
+.back-btn:hover {
+  background: #ff4d6d;
+  transform: scale(1.1);
+}
+
+#lightbox {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.9);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+#lightbox img {
+    width: auto;
+    height: auto;
+  max-width: 95vw;
+  max-height: 95vh;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+    .gallerry {
+        padding: 5px;
+    }
+}
+
+.gallerry img {
+    max-width: 100vw;
+    max-height: 90vh;
+}
+
+.letter-container {
+  display: flex;
+  gap: 20px;
+  padding: 40px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.letter-box {
+  width: 300px;
+  background: rgb(54, 49, 49);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  border: 2px solid #bdabaf;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.letter-box h2 {
+  margin-top: 0;
+  color: #999999;
+}
+
+.letter-box pre {
+    margin: 0;
+    transition: transform 0.2s ease;
+}
+
+@media (max-width: 700px) {
+    .letter-container {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.flowers {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.flowers span {
+  position: absolute;
+  top: -50px;
+  font-size: 24px;
+  opacity: 0.8;
+
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-10vh) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.flowers span:nth-child(1) { left: 10%; animation-duration: 8s; }
+.flowers span:nth-child(2) { left: 25%; animation-duration: 10s; }
+.flowers span:nth-child(3) { left: 40%; animation-duration: 7s; }
+.flowers span:nth-child(4) { left: 60%; animation-duration: 9s; }
+.flowers span:nth-child(5) { left: 75%; animation-duration: 11s; }
+.flowers span:nth-child(6) { left: 90%; animation-duration: 8.5s; }
+
+.plant {
+  position: fixed;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.plant.left {
+  left: 10px;
+}
+
+.plant.right {
+  right: 10px;
+}
+
+.stem {
+  width: 6px;
+  height: 0;
+  background: #387938;
+  border-radius: 3px;
+
+  animation: growStem 2s ease-out forwards;
+}
+
+.flower {
+  font-size: 40px;
+  transform: scale(0);
+  animation: growFlower 2.5s ease-out forwards;
+  animation-delay: 1.5s;
+}
+
+@keyframes growStem {
+  from {
+    height: 0;
+  }
+  to {
+    height: 200px;
+  }
+}
+
+@keyframes growFlower {
+  from {
+    transform: scale(0) rotate(-20deg);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.flower {
+  animation: growFlower 2.5s ease-out forwards, sway 3s ease-in-out infinite;
+  animation-delay: 1.5s, 2.5s;
+}
+
+@keyframes sway {
+  0% { transform: rotate(-3deg) scale(1); }
+  50% { transform: rotate(3deg) scale(1); }
+  100% { transform: rotate(-3deg) scale(1); }
+}
+
+.player {
+  max-width: 400px;
+  margin: 30px auto;
+  text-align: center;
+}
+
+/* Judul */
+#nowPlaying {
+  font-size: 14px;
+  color: #423c3c;
+  margin-bottom: 15px;
+}
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 10px;
+}
+
+/* Tombol */
+.controls button {
+  background: none;
+  border: none;
+  color: #363333;
+  font-size: 24px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+/* hover TANPA scale */
+.controls button:hover {
+  color: rgb(107, 98, 98);
+}
+
+.progress-container {
+  width: 100%;
+  height: 3px;
+  background: #2a2a2a;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #1db954;
+  border-radius: 10px;
+}
+
+/* WAKTU (SATU SAJA) */
+.time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: #aaa;
+  margin-bottom: 5px;
+}
+
+/* container tengah */
+.gift-container {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  position: relative;
+}
+
+/* SURAT */
+.envelope {
+  font-size: 100px; /* BESAR */
+  cursor: pointer;
+  text-align: center;
+  z-index: 10; /* biar di atas */
+  transition: 0.3s;
+}
+
+.envelope:hover {
+  transform: scale(1.1);
+}
+
+.envelope p {
+  font-size: 14px;
+  margin-top: 10px;
+  color: #aaa;
+}
+
+/* AREA LOVE */
+.love-area {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4d6d;
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0;
+  animation: showDot 0.5s forwards;
+}
+
+@keyframes showDot {
+  to {
+    opacity: 1;
+  }
+}
+
+.love-area {
+  animation: beat 1s infinite;
+}
+
+@keyframes beat {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.05); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.love-area {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+
+  animation: beat 1s infinite;
+}
+
+@keyframes beat {
+  0% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.08); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.love-text {
+  position: fixed; /* ⬅️ penting banget */
+  color: #ff4d6d;
+  font-size: 16px;
+  animation: floatUp 2s linear forwards;
+  pointer-events: none;
+  text-shadow: 0 0 10px #ff4d6d;
+}
+
+
+@keyframes floatUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+}
