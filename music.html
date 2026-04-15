@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Music</title>
+
+  <link rel="stylesheet" href="style.css">
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: #121212;
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Playlist */
+.container {
+  max-width: 500px;
+  margin: auto;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.song {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 10px;
+  background: #1e1e1e;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.song:hover {
+  background: #2a2a2a;
+}
+
+.active {
+  background: #737975 !important;
+}
+
+/* Player */
+.player-box {
+  max-width: 500px;
+  margin: 20px auto;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#nowPlaying {
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  margin: 5px;
+  padding: 10px 15px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.controls button:hover {
+  background: none;
+}
+
+#progress {
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* LOCK TOTAL progress bar */
+#progress,
+#progress:hover,
+#progress:active,
+#progress:focus {
+  height: 3px !important;
+  outline: none;
+  box-shadow: none;
+}
+
+/* track tetap kecil */
+#progress::-webkit-slider-runnable-track {
+  height: 3px !important;
+}
+
+/* firefox */
+#progress::-moz-range-track {
+  height: 3px !important;
+}
+
+/* hilangkan efek focus browser */
+#progress:focus {
+  outline: none;
+}
+
+</style>
+</head>
+
+<body>
+
+  <a href="index.html" class="back-btn">←</a>
+
+  <h2>🎵 playlist for you</h2>
+
+ <div class="container">
+  <ul id="playlist"></ul>
+</div>
+
+<div class="player">
+  <div id="nowPlaying">Pilih lagu...</div>
+
+  <div class="controls">
+    <button onclick="prevSong()">⏮</button>
+    <button onclick="togglePlay()" id="playBtn">▶</button>
+    <button onclick="nextSong()">⏭</button>
+  </div>
+
+   <div class="time">
+  <span id="currentTime">0:00</span>
+  <span id="duration">0:00</span>
+</div>
+
+  <div class="progress-container" id="progressContainer">
+  <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<audio id="audio"></audio>
+
+<script>
+const songs = [
+  { title: "Sempurna",file: "Andra And The Backbone - Sempurna (Official Music Video) [jStNaVCW838].mp3"},
+  { title: "DIRIMU YANG DULU",file: "ANGGIS DEVAKI - DIRIMU YANG DULU (LYRIC VIDEO) LIRIK LAGU TRENDING TERBARU [RY1zQHjUG_Q].mp3"},
+  { title: "Aku Milikmu",file: "Dewa 19 - Aku Milikmu _ Official Music Video [lHC_pKJKKg8] (1).mp3"},
+  { title: "Bernaung",file: "Feby Putri - Bernaung _ Lyrics [5DVbgd-c3m8].mp3"},
+  { title: "Cincin",file: "Hindia - Cincin (Official Lyric Video) [S0Kez6MERGE].mp3"},
+  { title: "ILYSB",file: "LANY - ILYSB (Official Video) [SSTp0rknOgA].mp3"},
+  { title: "Stuck",file: "LANY - Stuck (Official Lyric Video) [4qSjyl8JN4g].mp3"},
+  { title: "Memikat",file: "Lugia - Memikat ( Official Lyric Video ) [JBwyNqj3CD0].mp3"},
+  { title: "Masa ini, Nanti, dan Masa Indah Lainnya",file: "Masa ini, Nanti, dan Masa Indah Lainnya [dsOGH_ZBdCM] (1).mp3"},
+  { title: "Gadis Manis",file: "SENJIEN - Gadis Manis [Official Lyric Video] [HZQbFro1A0g].mp3"},
+  { title: "Di Akhir Perang",file: "Nadin Amizah - Di Akhir Perang (Official Lyric Video) [ugk5pd9xgSw].mp3"},
+  { title: "I Love You 3000",file: "Stephanie Poetri - I Love You 3000 (Official Music Video) [cPkE0IbDVs4].mp3"},
+  { title: "Shape of My Heart",file: "Sting - Shape of My Heart (Official Music Video) [NlwIDxCjL-8].mp3"},
+  { title: "Lover",file: "Taylor Swift - Lover (Official Music Video) [-BjZmE2gtdo].mp3"},
+  { title: "Paper Rings",file: "Taylor Swift - Paper Rings (Official Audio) [8zdg-pDF10g].mp3"},
+  { title: "Jatuh Suka",file: "TULUS - Jatuh Suka (Official Lyric Video) [2uJut6USftQ].mp3"},
+  { title: "Teman Hidup",file: "TULUS - Teman Hidup (Official Music Video) [dt4Ueda_h6Y].mp3"},
+  {title: "Definisi Bahagia",file: "Vidi Aldiano - Definisi Bahagia feat. Andi Rianto (Piano Version) [5Bj1JXEcfOo].mp3"}
+];
+
+let currentIndex = 0;
+
+// ================= ELEMENT =================
+const list = document.getElementById("playlist");
+const audio = document.getElementById("audio");
+const nowPlaying = document.getElementById("nowPlaying");
+const playBtn = document.getElementById("playBtn");
+const currentTimeEl = document.getElementById("currentTime");
+const durationEl = document.getElementById("duration");
+
+// kalau masih pakai range
+const progress = document.getElementById("progress");
+
+// kalau nanti pakai custom bar (aman kalau belum ada)
+const progressContainer = document.getElementById("progressContainer");
+const progressBar = document.getElementById("progressBar");
+
+// ================= PLAYLIST =================
+songs.forEach((song, index) => {
+  const li = document.createElement("li");
+  li.classList.add("song");
+  li.textContent = song.title;
+  li.onclick = () => playSong(index);
+  list.appendChild(li);
+});
+
+// ================= FORMAT WAKTU =================
+function formatTime(time) {
+  if (isNaN(time)) return "0:00";
+
+  let minutes = Math.floor(time / 60);
+  let seconds = Math.floor(time % 60);
+  if (seconds < 10) seconds = "0" + seconds;
+
+  return `${minutes}:${seconds}`;
+}
+
+// ================= PLAY =================
+function playSong(index) {
+  currentIndex = index;
+  audio.src = songs[index].file;
+  nowPlaying.textContent = songs[index].title;
+
+  audio.play();
+  playBtn.textContent = "⏸";
+
+  updateActiveSong();
+}
+
+// highlight lagu aktif
+function updateActiveSong() {
+  document.querySelectorAll(".song").forEach((s, i) => {
+    s.classList.toggle("active", i === currentIndex);
+  });
+}
+
+// ================= CONTROL =================
+function togglePlay() {
+  if (audio.paused) {
+    audio.play();
+    playBtn.textContent = "⏸";
+  } else {
+    audio.pause();
+    playBtn.textContent = "▶";
+  }
+}
+
+function nextSong() {
+  currentIndex = (currentIndex + 1) % songs.length;
+  playSong(currentIndex);
+}
+
+function prevSong() {
+  currentIndex = (currentIndex - 1 + songs.length) % songs.length;
+  playSong(currentIndex);
+}
+
+// ================= AUDIO EVENTS =================
+
+// durasi lagu
+audio.addEventListener("loadedmetadata", () => {
+  durationEl.textContent = formatTime(audio.duration);
+});
+
+// update progress + waktu
+audio.addEventListener("timeupdate", () => {
+  const percent = (audio.currentTime / audio.duration) * 100 || 0;
+
+  // 🔹 kalau masih pakai range
+  if (progress) {
+    progress.value = percent;
+    progress.style.background =
+      `linear-gradient(to right, #1db954 ${percent}%, #2a2a2a ${percent}%)`;
+  }
+
+  // 🔹 kalau pakai custom bar
+  if (progressBar) {
+    progressBar.style.width = percent + "%";
+  }
+
+  currentTimeEl.textContent = formatTime(audio.currentTime);
+});
+
+// geser lagu (range)
+if (progress) {
+  progress.addEventListener("input", () => {
+    audio.currentTime = (progress.value / 100) * audio.duration;
+  });
+}
+
+// geser lagu (custom bar)
+if (progressContainer) {
+  progressContainer.addEventListener("click", (e) => {
+    const width = progressContainer.clientWidth;
+    const clickX = e.offsetX;
+    audio.currentTime = (clickX / width) * audio.duration;
+  });
+}
+
+// auto next
+audio.addEventListener("ended", nextSong);
+
+</script>
+
+</script>
+</body>
+</html>
+  

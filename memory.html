@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>memory</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      background: #0f0f0f;
+      color: white;
+      font-family: sans-serif;
+      text-align: center;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>our memories 📸</h1>
+
+    <a href="index.html" class="back-btn">←</a>
+
+<div class="gallery">
+    <div id="lightbox" onclick="tutupFoto()">
+        <img id="lightbox-img">
+    </div>
+  <img src="1.jpeg" onclick="bukaFoto(this.src)">
+  <img src="3.jpeg" onclick="bukaFoto(this.src)">
+  <img src="4.jpeg" onclick="bukaFoto(this.src)">
+  <img src="5.jpeg" onclick="bukaFoto(this.src)">
+  <img src="6.jpeg" onclick="bukaFoto(this.src)">
+  <img src="7.jpeg" onclick="bukaFoto(this.src)">
+  <img src="7.jpeg" onclick="bukaFoto(this.src)">
+  <img src="7.jpeg" onclick="bukaFoto(this.src)">
+  <img src="8.jpeg" onclick="bukaFoto(this.src)">
+  <img src="9.jpeg" onclick="bukaFoto(this.src)">
+  <img src="10.jpeg" onclick="bukaFoto(this.src)">
+  <img src="11.jpeg" onclick="bukaFoto(this.src)">
+  <img src="12.jpeg" onclick="bukaFoto(this.src)">
+  <img src="13.jpeg" onclick="bukaFoto(this.src)">
+  <img src="14.jpeg" onclick="bukaFoto(this.src)">
+  <img src="15.jpeg" onclick="bukaFoto(this.src)">
+  <img src="16.jpeg" onclick="bukaFoto(this.src)">
+  <img src="17.jpeg" onclick="bukaFoto(this.src)">
+</div>
+
+<script>
+function bukaFoto(src) {
+  document.getElementById("lightbox").style.display = "flex";
+  document.getElementById("lightbox-img").src = src;
+}
+
+function tutupFoto() {
+  document.getElementById("lightbox").style.display = "none";
+}
+</script>
+
+</body>
+</html>
