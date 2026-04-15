@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For You ❤️</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Arial;
+  overflow: hidden;
+
+  /* background aesthetic */
+  background: radial-gradient(circle at top, #1e1e2f, #0d0d15);
+}
+
+/* 💌 ENVELOPE */
+.envelope {
+  font-size: 100px;
+  cursor: pointer;
+  transition: 0.5s;
+  z-index: 10;
+}
+
+.envelope.open {
+  transform: scale(0);
+  opacity: 0;
+}
+
+/* ❤️ AREA */
+.love-area {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+}
+
+/* titik */
+.dot {
+  width: 6px;
+  height: 6px;
+  background: #ff4d6d;
+  border-radius: 50%;
+  position: absolute;
+  opacity: 0;
+  animation: showDot 0.5s forwards;
+  box-shadow: 0 0 8px #ff4d6d;
+}
+
+@keyframes showDot {
+  to { opacity: 1; }
+}
+
+/* tulisan */
+.text-love {
+  margin-top: 320px;
+  font-size: 24px;
+  color: #ff4d6d;
+  opacity: 0;
+  transition: 1s;
+}
+
+.text-love.show {
+  opacity: 1;
+}
+
+/* bintang background */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  opacity: 0.5;
+}
+</style>
+</head>
+
+<body>
+<a href="index.html" class="back-btn">←</a>
+<!-- 💌 SURAT -->
+<div class="envelope" id="envelope" onclick="openLetter()">
+  💌
+</div>
+
+<!-- ❤️ LOVE -->
+<div class="love-area" id="loveArea"></div>
+
+<div class="text-love" id="textLove">For You ❤️</div>
+
+<!-- 🎵 AUDIO -->
+<audio id="music" src="yung kai - blue (Lyrics) [4adZ7AguVcw].mp3"></audio>
+
+<script>
+// ⭐ buat bintang background
+for (let i = 0; i < 100; i++) {
+  let star = document.createElement("div");
+  star.classList.add("star");
+  star.style.top = Math.random() * 100 + "vh";
+  star.style.left = Math.random() * 100 + "vw";
+  document.body.appendChild(star);
+}
+
+// love
+function showLoveText() {
+  const text = document.createElement("div");
+  text.innerText = "Love You ❤️";
+
+  // STYLE LANGSUNG DARI JS (biar gak ketimpa CSS lain)
+  text.style.position = "fixed";
+  text.style.left = Math.random() * 100 + "vw";
+  text.style.top = Math.random() * 100 + "vh";
+  text.style.transform = "translate(-50%, -50%)";
+  text.style.color = "#ff4d6d";
+  text.style.fontSize = (12 + Math.random() * 10) + "px";
+  text.style.pointerEvents = "none";
+  text.style.zIndex = "9999";
+  text.style.textShadow = "0 0 8px #ff4d6d";
+
+  // animasi langsung
+  text.animate([
+    { transform: "translate(-50%, -50%)", opacity: 1 },
+    { transform: "translate(-50%, -150%)", opacity: 0 }
+  ], {
+    duration: 2500,
+    easing: "ease-out"
+  });
+
+  document.body.appendChild(text);
+
+  setTimeout(() => {
+    text.remove();
+  }, 2500);
+}
+
+// 💌 klik surat
+function openLetter() {
+  const envelope = document.getElementById("envelope");
+  const area = document.getElementById("loveArea");
+  const text = document.getElementById("textLove");
+  const music = document.getElementById("music");
+
+  envelope.classList.add("open");
+
+  // play musik (safe)
+  music.play().catch(() => {});
+
+  let t = 0;
+
+  const interval = setInterval(() => {
+    const x = 175 + 120 * Math.pow(Math.sin(t), 3);
+    const y = 175 - (
+      90 * Math.cos(t) -
+      35 * Math.cos(2*t) - 
+      20 * Math.cos(3*t) -
+      10 * Math.cos(4*t)
+    );
+
+    const dot = document.createElement("div");
+    dot.classList.add("dot");
+
+    dot.style.left = x + "px";
+    dot.style.top = y + "px";
+
+    area.appendChild(dot);
+
+    t += 0.15;
+
+    if (t > Math.PI * 2) {
+      clearInterval(interval);
+
+      // tampilkan tulisan
+      setTimeout(() => {
+        text.classList.add("show");
+      }, 500);
+    }
+
+  }, 30);
+}
+</script>
+
+</body>
+</html>

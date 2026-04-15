@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB for L</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>this is for you ❤</h1>
+
+    <a href="memory.html" style="text-decoration:none; color:inherit;">
+        <section style="cursor:pointer;">
+        <h2>memory</h2>
+        <p>di sini sebagai ruang percakapan lama yang tersimpan</p>
+    </section>
+    </a>
+
+    <a href="isi hati.html" style="text-decoration: none; color:inherit;">
+          <section style="cursor: pointer;">
+        <h2>isi hati</h2>
+    </section>
+    </a>
+
+    <a href="music.html" style="text-decoration: none; color:inherit">
+       <section style="cursor: pointer;">
+      <h2>song for you</h2>
+    </section>
+    </a>
+
+    <section>
+        <h2>send your message 📧</h2>
+        <input type="text" id="nama" placeholder="nama">
+        <textarea id="pesan" placeholder="Tulis pesan"></textarea>
+        <button onclick="kirimPesan()">kirim</button>
+    </section>
+
+    <a href="gift.html" style="text-decoration: none; color:inherit">
+       <section style="cursor: pointer;">
+      <h2>gift</h2>
+    </section>
+    </a>
+
+    <!-- SUPABASE -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+   <script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
+  const supabase = createClient(
+    "https://pbhqmjrqsatjritorykm.supabase.co",
+    "sb_publishable_IkYISoCNbVj-HF8WtddF9g_8sXc2UIG"
+  );
+
+  window.kirimPesan = async function () {
+    alert("tombol diklik ✅"); // tes dulu
+
+    const nama = document.getElementById("nama").value;
+    const pesan = document.getElementById("pesan").value;
+
+    const { error } = await supabase
+      .from("pesan")
+      .insert([{ nama: nama, pesan: pesan }]);
+
+    if (error) {
+      alert("Error: " + error.message);
+    } else {
+      alert("Pesan masuk 💌");
+    }
+  };
+</script>
+
+</body>
+</html>
